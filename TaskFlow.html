@@ -4,9 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./src/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body>
-    
+<body class="py-20 px-10">
+    <section class="flex">
+            <button> add task </button>
+            <div class="flex relative">
+                <input type="text" placeholder="Search ...." class="w-[24em] bg-[#e6e6e6] border-black border-2 rounded-lg ">
+                <i class="fa-solid fa-magnifying-glass absolute right-0 me-2 top-2"></i>
+            </div>
+    </section>
     <script src="TaskFlow.js" ></script>
 </body>
 </html>
