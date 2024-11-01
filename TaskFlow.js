@@ -6,7 +6,6 @@ const closeButton = document.querySelector("#closeBUtton");
 // this place for selecting all the inputs 
 const taskTitle = document.querySelector("#taskTitile");
 const dueDate = document.querySelector("#date");
-const priority = document.querySelector("#priority");
 const Thestatus = document.querySelector("#status");
 const Discreption = document.querySelector("#Discreption");
 // select the error containers of the input fields
@@ -19,10 +18,11 @@ today.setHours(0, 0, 0, 0); //this is seting the hour to med night
 const todo = document.querySelector("#Todtask");
 const doing = document.querySelector("#DoingTask");
 const done = document.querySelector("#DoneTask");
+// this is the element that is going to e dissplayed to change the info of a task
 
 
 // get the taskes form loclaStorage 
-const myTaskes = JSON.parse(localStorage.getItem("task")) || [];
+let myTaskes = JSON.parse(localStorage.getItem("task")) || [];
 // get the last id of the taskes
 let ID = JSON.parse(localStorage.getItem("id")) || 0;
 
@@ -84,8 +84,6 @@ confirmButton.addEventListener("click", (e) => {
 
 
 myTaskes.map((task) => {
-    console.log(task.dueDate.slice(5, 10));
-
     let prioritycolor
     if (task.priority === "p1") {
         prioritycolor = "bg-red-500";
@@ -105,9 +103,9 @@ myTaskes.map((task) => {
                     </h2>
                     
                     <select id="prioritySelect" class="rounded-md w-16 priorityList ${prioritycolor}" data-id=${task.taskId}>
-                        <option ${task.priority == "p1" ? "selected" : ""} value="p1">p1</option>
-                        <option ${task.priority == "p2" ? "selected" : ""} value="p2">p2</option>
-                        <option ${task.priority == "p2" ? "selected" : ""} value="p3">p3</option>
+                        <option ${task.priority == "p1" ? "selected" : ""} class="bg-red-500" value="p1">p1</option>
+                        <option ${task.priority == "p2" ? "selected" : ""} value="p2" class="bg-green-500">p2</option>
+                        <option ${task.priority == "p3" ? "selected" : ""} value="p3" class="bg-blue-500" cla>p3</option>
                     </select>
                 </div>
                 <div class="flex justify-between pt-6 ">
@@ -122,4 +120,34 @@ myTaskes.map((task) => {
             </div>`
     }
 })
+const priorityList = document.querySelectorAll(".priorityList");
+
+// this function is changing the priority of the task
+priorityList.forEach((time) => {
+    time.addEventListener("change", (e) => {
+        const taskId = e.target.dataset.id;
+        const priorityValue = e.target.value;
+        const selectedElemet = myTaskes.findIndex((element)=>{
+            if (element.taskId==taskId) {
+                return element
+            }
+        })
+        myTaskes[selectedElemet].priority = priorityValue;
+        console.log(myTaskes);
+        localStorage.setItem("task", JSON.stringify(myTaskes));
+        window.location.reload();
+    })
+})
+// this finction is delete the taske 
+const deletetask = document.querySelectorAll(".deletetask");
+deletetask.forEach((time) => {
+    time.addEventListener("click", (e) => {
+        const taskId = e.target.dataset.id;
+        let newtaskes = myTaskes.filter(e=> e.taskId != taskId)
+        localStorage.setItem("task",JSON.stringify(newtaskes));
+        localStorage.setItem("id",JSON.stringify(--ID));
+        window.location.reload()
+    })
+})
+
 
