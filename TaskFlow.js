@@ -3,6 +3,8 @@ const addTask = document.querySelector("#addTask");
 const popup = document.querySelector("#popup");
 const confirmButton = document.querySelector("#confirmButton");
 const closeButton = document.querySelector("#closeBUtton");
+const editTaskPopUp = document.querySelector("#editTask");
+
 // this place for selecting all the inputs 
 const taskTitle = document.querySelector("#taskTitile");
 const dueDate = document.querySelector("#date");
@@ -27,7 +29,6 @@ let myTaskes = JSON.parse(localStorage.getItem("task")) || [];
 let ID = JSON.parse(localStorage.getItem("id")) || 0;
 
 
-// the event that shows the pop up when the button is clicked 
 
 addTask.addEventListener("click", (e) => {
     e.preventDefault();
@@ -127,8 +128,8 @@ priorityList.forEach((time) => {
     time.addEventListener("change", (e) => {
         const taskId = e.target.dataset.id;
         const priorityValue = e.target.value;
-        const selectedElemet = myTaskes.findIndex((element)=>{
-            if (element.taskId==taskId) {
+        const selectedElemet = myTaskes.findIndex((element) => {
+            if (element.taskId == taskId) {
                 return element
             }
         })
@@ -143,10 +144,103 @@ const deletetask = document.querySelectorAll(".deletetask");
 deletetask.forEach((time) => {
     time.addEventListener("click", (e) => {
         const taskId = e.target.dataset.id;
-        let newtaskes = myTaskes.filter(e=> e.taskId != taskId)
-        localStorage.setItem("task",JSON.stringify(newtaskes));
-        localStorage.setItem("id",JSON.stringify(--ID));
+        let newtaskes = myTaskes.filter(e => e.taskId != taskId)
+        localStorage.setItem("task", JSON.stringify(newtaskes));
+        localStorage.setItem("id", JSON.stringify(--ID));
         window.location.reload()
+    })
+})
+// this function is edit the task
+const editTaskButton = document.querySelectorAll(".editTask");
+console.log(editTaskButton);
+
+editTaskButton.forEach((item) => {
+    item.addEventListener("click", (e) => {
+        const taskID = e.target.dataset.id
+        const task = myTaskes.find((e) => {
+            if (e.taskId == taskID) {
+                return e
+            }
+        })
+        
+        editTaskPopUp.innerHTML = `<div class="  justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative p-4 w-full max-w-md max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <!-- Modal header -->
+                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                            Add task form
+                        </h3>
+                        <button type="button"
+                            class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            id="closeBUtton">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-4 md:p-5">
+                        <form class="space-y-4" action="#">
+                            <div>
+                                <label for="taskTitile"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">task
+                                    Title</label>
+                                <input type="text" id="taskTitile" 
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                    placeholder="task Title"  />
+                                    <div id="titleError">
+                                    </div>
+                            </div>
+                            <div>
+                                <label for="date"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">due
+                                    date</label>
+                                <input type="date" id="date"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                    placeholder="task Title"  />
+                                    <div id="dateError">
+                                    </div>
+                            </div>
+                            <div class=" flex justify-between ">
+                                <div class="w-1/2">
+                                    <label for="priority"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">priority</label>
+                                    <select id="priority"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="p1" selected>p1</option>
+                                        <option value="p2">p2</option>
+                                        <option value="p3">p3</option>
+                                    </select>
+                                </div>
+                                <div class="w-1/2">
+                                    <label for="status"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">status</label>
+                                    <select id="status"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="todo" selected>Todo</option>
+                                        <option value="doing">Doing</option>
+                                        <option value="done">Done</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="Discreption"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Task Discreption</label>
+                                <textarea id="Discreption"
+                                class="bg-gray-50 border resize-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"></textarea>
+                            </div>
+                            <button type="submit"
+                                class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                id="confirmButton"> confirm</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>`;
     })
 })
 
