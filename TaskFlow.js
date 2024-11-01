@@ -7,68 +7,119 @@ const closeButton = document.querySelector("#closeBUtton");
 const taskTitle = document.querySelector("#taskTitile");
 const dueDate = document.querySelector("#date");
 const priority = document.querySelector("#priority");
-const status = document.querySelector("#status");
+const Thestatus = document.querySelector("#status");
 const Discreption = document.querySelector("#Discreption");
 // select the error containers of the input fields
 const titleError = document.querySelector("#titleError");
-const dateError = document.querySelector("#dateError")
+const dateError = document.querySelector("#dateError");
 // select the date to compare it later
 const today = new Date;
-today.setHours(0,0,0,0); //this is seting the hour to med night 
+today.setHours(0, 0, 0, 0); //this is seting the hour to med night 
+// select all the  tasks holders
+const todo = document.querySelector("#Todtask");
+const doing = document.querySelector("#DoingTask");
+const done = document.querySelector("#DoneTask");
 
 
-
-
-
-
-
+// get the taskes form loclaStorage 
 const myTaskes = JSON.parse(localStorage.getItem("task")) || [];
-const newtask = {
-    title: "",
-    dueDate: "",
-    priority: "",
-    status: "",
-    Discreption: "",
-};
+// get the last id of the taskes
+let ID = JSON.parse(localStorage.getItem("id")) || 0;
 
 
-// an evnt that shows the pop up when the button is clicked 
+// the event that shows the pop up when the button is clicked 
 
-addTask.addEventListener("click",(e)=>{
-    e.preventDefault;
-    addTask.setAttribute("disabled","");
+addTask.addEventListener("click", (e) => {
+    e.preventDefault();
+    addTask.setAttribute("disabled", "");
     popup.classList.add("block");
     popup.classList.remove("hidden");
 });
-closeButton.addEventListener("click",(e)=>{
-    e.preventDefault;
+// the event that close the  pop up when the close button is clicked 
+closeButton.addEventListener("click", (e) => {
+    e.preventDefault();
     popup.classList.add("hidden");
     popup.classList.remove("block");
     addTask.removeAttribute("disabled")
 });
-confirmButton.addEventListener("click",(e)=>{
-    e.preventDefault;
-    if(taskTitle.value.length<6){
+// the event that confirm the task when the confirm button is clicked
+confirmButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (taskTitle.value.length < 6) {
         const titileError = `<p class="text-red-500 mx-auto">your title must be at least 6 characters long</p>`;
         titleError.innerHTML = titileError;
         return;
-    } else{
+    } else {
         titleError.innerHTML = "";
     }
     const dueDatevalue = new Date(dueDate.value);
-    
+
     if (dueDatevalue < today) {
-        const dateErroR =`<p class="text-red-500 mx-auto">you'r due date is in the past</p>`;
-        dateError.innerHTML = `<p class="text-red-500 mx-auto">your title must be at least 6 characters long</p>`
+        const dateErroR = `<p class="text-red-500 mx-auto">you'r due date is in the past</p>`;
+        dateError.innerHTML = dateErroR
         return
     }
-    else{
+    else {
         dateError.innerHTML = "";
     }
-    
-
-
+    // the task is added to the array and the local storage is updated
+    const newtask = {
+        taskId: ID + 1,
+        title: taskTitle.value,
+        dueDate: dueDatevalue,
+        priority: priority.value,
+        Status: Thestatus.value,
+        Discreption: Discreption.value,
+    };
+    ID++
+    myTaskes.push(newtask);
+    localStorage.setItem("task", JSON.stringify(myTaskes));
+    localStorage.setItem("id", JSON.stringify(ID));
     popup.classList.add("hidden");
     popup.classList.remove("block");
     addTask.removeAttribute("disabled");
+    window.location.reload();
 });
+// the event to show each task in the plac it belong to 
+
+
+myTaskes.map((task) => {
+    console.log(task.dueDate.slice(5, 10));
+
+    let prioritycolor
+    if (task.priority === "p1") {
+        prioritycolor = "bg-red-500";
+    }
+    else if (task.priority === "p2") {
+        prioritycolor = "bg-green-500";
+    }
+    else if (task.priority === "p3") {
+        prioritycolor = "bg-blue-500";
+    }
+
+    if (task.Status === "todo") {
+        todo.innerHTML += ` <div class=" thetaskcard w-[90%] mx-auto mt-2 flex flex-col bg-gray-300 rounded-lg p-4 data-id=${task.taskId} ">
+                <div class=" flex justify-between">
+                    <h2 id="cardTitle" class="text-lg">
+                        ${task.title}
+                    </h2>
+                    
+                    <select id="prioritySelect" class="rounded-md w-16 priorityList ${prioritycolor}" data-id=${task.taskId}>
+                        <option ${task.priority == "p1" ? "selected" : ""} value="p1">p1</option>
+                        <option ${task.priority == "p2" ? "selected" : ""} value="p2">p2</option>
+                        <option ${task.priority == "p2" ? "selected" : ""} value="p3">p3</option>
+                    </select>
+                </div>
+                <div class="flex justify-between pt-6 ">
+                    <p id="taskDate">
+                        ${task.dueDate.slice(5, 10)}
+                    </p>
+                    <div>
+                        <i class="fa-solid fa-trash fa-lg pe-2 deletetask" style="color: #e60039;" data-id=${task.taskId}></i>
+                        <i class="fa-solid fa-pen-to-square fa-lg editTask" style="color: #1259d3;" data-id=${task.taskId}></i>
+                    </div>
+                </div>
+            </div>`
+    }
+})
+

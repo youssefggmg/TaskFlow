@@ -62,7 +62,6 @@
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                     placeholder="task Title"  />
                                     <div id="dateError">
-
                                     </div>
                             </div>
                             <div class=" flex justify-between ">
@@ -81,9 +80,9 @@
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">status</label>
                                     <select id="status"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option value="p1" selected>Todo</option>
-                                        <option value="p2">Doing</option>
-                                        <option value="p3">Done</option>
+                                        <option value="todo" selected>Todo</option>
+                                        <option value="doing">Doing</option>
+                                        <option value="done">Done</option>
                                     </select>
                                 </div>
                             </div>
@@ -135,14 +134,14 @@
             </div>
         </div>
         <!-- card hlder -->
-        <div class="bg-[#eeeeee] h-[100%] row-start-2 row-end-3 rounded-lg overflow-y-scroll">
+        <div class="bg-[#eeeeee] h-[100%] row-start-2 row-end-3 rounded-lg overflow-y-scroll" id="Todtask">
             <!-- card -->
             <div class="w-[90%] mx-auto mt-2 flex flex-col bg-gray-300 rounded-lg p-4 ">
                 <div class=" flex justify-between">
                     <h2 id="cardTitle" class="text-lg">
                         cardetitle
                     </h2>
-                    <select id="cCrioritySelect" class="rounded-md w-16">
+                    <select id="prioritySelect" class="rounded-md w-16">
                         <option selected value="p1">p1</option>
                         <option value="p2">p2</option>
                         <option value="p3">p3</option>
@@ -164,7 +163,7 @@
                 <h2 class="text-xl font-semibold text-white pl-5">Doing</h2>
             </div>
         </div>
-        <div class="bg-[#eeeeee] h-[100%] row-start-2 row-end-3 rounded-lg overflow-y-scroll">
+        <div class="bg-[#eeeeee] h-[100%] row-start-2 row-end-3 rounded-lg overflow-y-scroll" id="DoingTask">
             <!-- card -->
 
         </div>
@@ -173,7 +172,8 @@
                 <h2 class="text-xl font-semibold text-white pl-5">Done</h2>
             </div>
         </div>
-        <div class="bg-[#eeeeee] h-[100%] row-start-2 row-end-3 rounded-lg overflow-y-scroll">
+        <div class="bg-[#eeeeee] h-[100%] row-start-2 row-end-3 rounded-lg overflow-y-scroll"  id="DoneTask">
+
             <!-- card -->
 
         </div>
