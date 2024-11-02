@@ -9,10 +9,12 @@ const editTaskPopUp = document.querySelector("#editTask");
 const taskTitle = document.querySelector("#taskTitile");
 const dueDate = document.querySelector("#date");
 const Thestatus = document.querySelector("#status");
+const priority =document.querySelector("#status")
 const Discreption = document.querySelector("#Discreption");
 // select the error containers of the input fields
 const titleError = document.querySelector("#titleError");
 const dateError = document.querySelector("#dateError");
+const discreptionError = document.querySelector("#discreptionError")
 // select the date to compare it later
 const today = new Date;
 today.setHours(0, 0, 0, 0); //this is seting the hour to med night 
@@ -62,6 +64,10 @@ confirmButton.addEventListener("click", (e) => {
     }
     else {
         dateError.innerHTML = "";
+    }
+    if (Discreption.value.length <= 0) {
+        const dateErroR = `<p class="text-red-500 mx-auto">you must provide a description</p>`;
+        discreptionError.innerHTML = dateErroR
     }
     // the task is added to the array and the local storage is updated
     const newtask = {
@@ -120,6 +126,54 @@ myTaskes.map((task) => {
                 </div>
             </div>`
     }
+    else if (task.Status === "doing") {
+        doing.innerHTML += ` <div class=" thetaskcard w-[90%] mx-auto mt-2 flex flex-col bg-gray-300 rounded-lg p-4 data-id=${task.taskId} ">
+                <div class=" flex justify-between">
+                    <h2 id="cardTitle" class="text-lg">
+                        ${task.title}
+                    </h2>
+                    
+                    <select id="prioritySelect" class="rounded-md w-16 priorityList ${prioritycolor}" data-id=${task.taskId}>
+                        <option ${task.priority == "p1" ? "selected" : ""} class="bg-red-500" value="p1">p1</option>
+                        <option ${task.priority == "p2" ? "selected" : ""} value="p2" class="bg-green-500">p2</option>
+                        <option ${task.priority == "p3" ? "selected" : ""} value="p3" class="bg-blue-500" cla>p3</option>
+                    </select>
+                </div>
+                <div class="flex justify-between pt-6 ">
+                    <p id="taskDate">
+                        ${task.dueDate.slice(5, 10)}
+                    </p>
+                    <div>
+                        <i class="fa-solid fa-trash fa-lg pe-2 deletetask" style="color: #e60039;" data-id=${task.taskId}></i>
+                        <i class="fa-solid fa-pen-to-square fa-lg editTask" style="color: #1259d3;" data-id=${task.taskId}></i>
+                    </div>
+                </div>
+            </div>`
+    }
+    if (task.Status === "done") {
+        done.innerHTML += ` <div class=" thetaskcard w-[90%] mx-auto mt-2 flex flex-col bg-gray-300 rounded-lg p-4 data-id=${task.taskId} ">
+                <div class=" flex justify-between">
+                    <h2 id="cardTitle" class="text-lg">
+                        ${task.title}
+                    </h2>
+                    
+                    <select id="prioritySelect" class="rounded-md w-16 priorityList ${prioritycolor}" data-id=${task.taskId}>
+                        <option ${task.priority == "p1" ? "selected" : ""} class="bg-red-500" value="p1">p1</option>
+                        <option ${task.priority == "p2" ? "selected" : ""} value="p2" class="bg-green-500">p2</option>
+                        <option ${task.priority == "p3" ? "selected" : ""} value="p3" class="bg-blue-500" cla>p3</option>
+                    </select>
+                </div>
+                <div class="flex justify-between pt-6 ">
+                    <p id="taskDate">
+                        ${task.dueDate.slice(5, 10)}
+                    </p>
+                    <div>
+                        <i class="fa-solid fa-trash fa-lg pe-2 deletetask" style="color: #e60039;" data-id=${task.taskId}></i>
+                        <i class="fa-solid fa-pen-to-square fa-lg editTask" style="color: #1259d3;" data-id=${task.taskId}></i>
+                    </div>
+                </div>
+            </div>`
+    }
 })
 const priorityList = document.querySelectorAll(".priorityList");
 
@@ -134,7 +188,6 @@ priorityList.forEach((time) => {
             }
         })
         myTaskes[selectedElemet].priority = priorityValue;
-        console.log(myTaskes);
         localStorage.setItem("task", JSON.stringify(myTaskes));
         window.location.reload();
     })
@@ -162,19 +215,18 @@ editTaskButton.forEach((item) => {
                 return e
             }
         })
-        
-        editTaskPopUp.innerHTML = `<div class="  justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        editTaskPopUp.innerHTML = `<div class="  justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full" id="edittaskModal">
             <div class="relative p-4 w-full max-w-md max-h-full">
                 <!-- Modal content -->
                 <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                     <!-- Modal header -->
                     <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                         <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                            Add task form
+                            Edit task form
                         </h3>
                         <button type="button"
                             class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                            id="closeBUtton">
+                            id="editCloseBUtton">
                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 14 14">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -186,62 +238,117 @@ editTaskButton.forEach((item) => {
                     <div class="p-4 md:p-5">
                         <form class="space-y-4" action="#">
                             <div>
-                                <label for="taskTitile"
+                                <label for="EdittaskTitile"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">task
                                     Title</label>
-                                <input type="text" id="taskTitile" 
+                                <input type="text" id="EdittaskTitile" 
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                                    placeholder="task Title"  />
-                                    <div id="titleError">
+                                    placeholder="task Title" value="${task.title}"/>
+                                    <div id="editTitleError">
                                     </div>
                             </div>
                             <div>
-                                <label for="date"
+                                <label for="editDate"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">due
                                     date</label>
-                                <input type="date" id="date"
+                                <input type="date" id="editDate"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                                    placeholder="task Title"  />
-                                    <div id="dateError">
+                                    placeholder="task Title" />
+                                    <div id="editDateError">
                                     </div>
                             </div>
                             <div class=" flex justify-between ">
                                 <div class="w-1/2">
-                                    <label for="priority"
+                                    <label for="editpriority"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">priority</label>
-                                    <select id="priority"
+                                    <select id="editpriority"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option value="p1" selected>p1</option>
-                                        <option value="p2">p2</option>
-                                        <option value="p3">p3</option>
+                                        <option ${task.priority == "p1" ? "selectd" : ""} value="p1">p1</option>
+                                        <option value="p2" ${task.priority == "p2" ? "selectd" : ""}>p2</option>
+                                        <option value="p3" ${task.priority == "p3" ? "selectd" : ""}>p3</option>
                                     </select>
                                 </div>
                                 <div class="w-1/2">
-                                    <label for="status"
+                                    <label for="editStatus"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">status</label>
-                                    <select id="status"
+                                    <select id="editStatus"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option value="todo" selected>Todo</option>
-                                        <option value="doing">Doing</option>
-                                        <option value="done">Done</option>
+                                        <option ${task.Status == "todo" ? "selected" : ""} value="todo">Todo</option>
+                                        <option ${task.Status == "doing" ? "selected" : ""} value="doing">Doing</option>
+                                        <option ${task.Status == "done" ? "selected" : ""} value="done">Done</option>
                                     </select>
                                 </div>
                             </div>
                             <div>
-                                <label for="Discreption"
+                                <label for="editDiscreption"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Task Discreption</label>
                                 <textarea id="Discreption"
-                                class="bg-gray-50 border resize-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"></textarea>
+                                class="bg-gray-50 border resize-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" value ="${task.discreption}"></textarea>
+                            </div>
+                            <div id="editDiscreptionError">
                             </div>
                             <button type="submit"
                                 class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                id="confirmButton"> confirm</button>
+                                id="editConfirmButton"> confirm</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>`;
+        const editCloseButton = document.querySelector("#editCloseBUtton");
+        editCloseButton.addEventListener("click", () => {
+            editTaskPopUp.innerHTML = ""
+        })
+        const EdittaskTitile = document.querySelector("#EdittaskTitile");
+        const EditDueDate = document.querySelector("#editDate");
+        const editStatus = document.querySelector("#editStatus");
+        const editpriority = document.querySelector("#editpriority");
+        const editDiscreption = document.querySelector("#editDiscreption");
+        const editTitleError = document.querySelector("#editTitleError");
+        const editDateError = document.querySelector("#editDateError");
+        const editConfirmButton = document.querySelector("#editConfirmButton");
+        editConfirmButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            if (EdittaskTitile.value.length < 6) {
+                const titileError = `<p class="text-red-500 mx-auto">your title must be at least 6 characters long</p>`;
+                editTitleError.innerHTML = titileError;
+                return;
+            } else {
+                titleError.innerHTML = "";
+            }
+            const EditDueDateValue = new Date(EditDueDate.value);
+
+            if (EditDueDateValue < today) {
+                const dateErroR = `<p class="text-red-500 mx-auto">you'r due date is in the past</p>`;
+                editDateError.innerHTML = dateErroR
+                return
+            }
+            else {
+                editDateError.innerHTML = "";
+            }
+            if (editDiscreption.value.length <= 0) {
+                const dateErroR = `<p class="text-red-500 mx-auto">you must provide a description</p>`;
+                discreptionError.innerHTML = dateErroR
+            }
+            let indexOfSelectedTask = myTaskes.findIndex((e)=>{
+                if (e.taskId == taskID) {
+                    return e;
+                }
+            })
+            myTaskes[indexOfSelectedTask].title =  EdittaskTitile.value;
+            myTaskes[indexOfSelectedTask].dueDate =  EditDueDate.value;
+            myTaskes[indexOfSelectedTask].priority =  editpriority.value;
+            myTaskes[indexOfSelectedTask].Status =  editStatus.value;
+            myTaskes[indexOfSelectedTask].Discreption =  editDiscreption.value;
+        });
     })
 })
-
+// const newtask = {
+//     taskId: ID + 1,
+//     title: taskTitle.value,
+//     dueDate: dueDatevalue,
+//     priority: priority.value,
+//     Status: Thestatus.value,
+//     Discreption: Discreption.value,
+// };
 
