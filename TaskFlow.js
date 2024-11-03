@@ -205,7 +205,6 @@ deletetask.forEach((time) => {
 })
 // this function is edit the task
 const editTaskButton = document.querySelectorAll(".editTask");
-console.log(editTaskButton);
 
 editTaskButton.forEach((item) => {
     item.addEventListener("click", (e) => {
@@ -215,6 +214,12 @@ editTaskButton.forEach((item) => {
                 return e
             }
         })
+        const basedate = task.dueDate ;
+        const date = new Date(basedate);
+        const year = date.getFullYear();
+        const month = String(date.getMonth()).padStart(2,"0");
+        const day = String(date.getDate()).padStart(2,"0");
+        const fullDate = `${year}-${month}-${day}`;
         editTaskPopUp.innerHTML = `<div class="  justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full" id="edittaskModal">
             <div class="relative p-4 w-full max-w-md max-h-full">
                 <!-- Modal content -->
@@ -253,7 +258,9 @@ editTaskButton.forEach((item) => {
                                     date</label>
                                 <input type="date" id="editDate"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                                    placeholder="task Title" />
+                                    placeholder="task Title" 
+                                    value="${fullDate}"
+                                    />
                                     <div id="editDateError">
                                     </div>
                             </div>
@@ -282,8 +289,8 @@ editTaskButton.forEach((item) => {
                             <div>
                                 <label for="editDiscreption"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Task Discreption</label>
-                                <textarea id="Discreption"
-                                class="bg-gray-50 border resize-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" value ="${task.discreption}"></textarea>
+                                <textarea id="editDiscreption"
+                                class="bg-gray-50 border resize-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" >${task.Discreption}</textarea>
                             </div>
                             <div id="editDiscreptionError">
                             </div>
@@ -295,6 +302,8 @@ editTaskButton.forEach((item) => {
                 </div>
             </div>
         </div>`;
+        
+        
         const editCloseButton = document.querySelector("#editCloseBUtton");
         editCloseButton.addEventListener("click", () => {
             editTaskPopUp.innerHTML = ""
@@ -326,6 +335,8 @@ editTaskButton.forEach((item) => {
             else {
                 editDateError.innerHTML = "";
             }
+            console.log(editDiscreption.value);
+            
             if (editDiscreption.value.length <= 0) {
                 const dateErroR = `<p class="text-red-500 mx-auto">you must provide a description</p>`;
                 discreptionError.innerHTML = dateErroR
@@ -340,6 +351,8 @@ editTaskButton.forEach((item) => {
             myTaskes[indexOfSelectedTask].priority =  editpriority.value;
             myTaskes[indexOfSelectedTask].Status =  editStatus.value;
             myTaskes[indexOfSelectedTask].Discreption =  editDiscreption.value;
+            localStorage.setItem("task",JSON.stringify(myTaskes));
+            location.reload();
         });
     })
 })
