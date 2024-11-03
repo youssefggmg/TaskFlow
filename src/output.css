@@ -659,6 +659,10 @@ video {
   height: calc(100% - 1rem);
 }
 
+.h-auto {
+  height: auto;
+}
+
 .max-h-full {
   max-height: 100%;
 }
@@ -705,6 +709,10 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.w-4\/5 {
+  width: 80%;
 }
 
 .max-w-md {
@@ -770,6 +778,10 @@ video {
 
 .overflow-y-scroll {
   overflow-y: scroll;
+}
+
+.break-words {
+  overflow-wrap: break-word;
 }
 
 .rounded-lg {

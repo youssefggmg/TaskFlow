@@ -104,8 +104,8 @@ myTaskes.map((task) => {
 
     if (task.Status === "todo") {
         todo.innerHTML += ` <div class=" thetaskcard w-[90%] mx-auto mt-2 flex flex-col bg-gray-300 rounded-lg p-4 data-id=${task.taskId} ">
-                <div class=" flex justify-between">
-                    <h2 id="cardTitle" class="text-lg">
+                <div class=" flex justify-between items-center">
+                    <h2 id="cardTitle" class="text-lg w-4/5 h-auto break-words">
                         ${task.title}
                     </h2>
                     
@@ -128,11 +128,10 @@ myTaskes.map((task) => {
     }
     else if (task.Status === "doing") {
         doing.innerHTML += ` <div class=" thetaskcard w-[90%] mx-auto mt-2 flex flex-col bg-gray-300 rounded-lg p-4 data-id=${task.taskId} ">
-                <div class=" flex justify-between">
-                    <h2 id="cardTitle" class="text-lg">
+                <div class=" flex justify-between items-center">
+                    <h2 id="cardTitle" class="text-lg w-4/5 h-auto break-words">
                         ${task.title}
                     </h2>
-                    
                     <select id="prioritySelect" class="rounded-md w-16 priorityList ${prioritycolor}" data-id=${task.taskId}>
                         <option ${task.priority == "p1" ? "selected" : ""} class="bg-red-500" value="p1">p1</option>
                         <option ${task.priority == "p2" ? "selected" : ""} value="p2" class="bg-green-500">p2</option>
@@ -152,8 +151,8 @@ myTaskes.map((task) => {
     }
     if (task.Status === "done") {
         done.innerHTML += ` <div class=" thetaskcard w-[90%] mx-auto mt-2 flex flex-col bg-gray-300 rounded-lg p-4 data-id=${task.taskId} ">
-                <div class=" flex justify-between">
-                    <h2 id="cardTitle" class="text-lg">
+                <div class=" flex justify-between items-center">
+                    <h2 id="cardTitle" class="text-lg w-4/5 h-auto break-words">
                         ${task.title}
                     </h2>
                     
